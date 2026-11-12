@@ -1,0 +1,51 @@
+{
+  "info": {
+    "name": "VELOOP Payout API",
+    "description": "User and admin redemption workflows. Provide credentials and reward IDs from your development database using collection variables.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:4000" },
+    { "key": "userToken", "value": "" },
+    { "key": "adminToken", "value": "" },
+    { "key": "rewardOptionId", "value": "" },
+    { "key": "redemptionId", "value": "" },
+    { "key": "referenceId", "value": "" },
+    { "key": "userId", "value": "" },
+    { "key": "amazonRewardOptionId", "value": "" },
+    { "key": "googlePlayRewardOptionId", "value": "" },
+    { "key": "approvedRewardName", "value": "" },
+    { "key": "approvedDenomination", "value": "" },
+    { "key": "approvedRequiredVEs", "value": "" }
+  ],
+  "item": [
+    { "name": "Health", "request": { "method": "GET", "url": "{{baseUrl}}/api/health" } },
+    { "name": "Public payout config", "request": { "method": "GET", "url": "{{baseUrl}}/api/payout/config" } },
+    { "name": "Public payout methods", "request": { "method": "GET", "url": "{{baseUrl}}/api/payout/methods" } },
+    { "name": "Register user", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"name\": \"Demo User\",\n  \"email\": \"user@example.test\",\n  \"password\": \"replace-with-demo-password\"\n}" }, "url": "{{baseUrl}}/api/auth/register" } },
+    { "name": "User login", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"email\": \"{{userEmail}}\",\n  \"password\": \"{{userPassword}}\"\n}" }, "url": "{{baseUrl}}/api/auth/login" } },
+    { "name": "Admin login", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"{{adminPassword}}\"\n}" }, "url": "{{baseUrl}}/api/admin/auth/login" } },
+    { "name": "Wallet", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }], "url": "{{baseUrl}}/api/wallet" } },
+    { "name": "Reward quote", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"method\": \"upi\",\n  \"rewardOptionId\": \"{{rewardOptionId}}\"\n}" }, "url": "{{baseUrl}}/api/redemptions/quote" } },
+    { "name": "Create redemption (UPI)", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Idempotency-Key", "value": "demo-key-12345678" }], "body": { "mode": "raw", "raw": "{\n  \"method\": \"upi\",\n  \"rewardOptionId\": \"{{rewardOptionId}}\",\n  \"destination\": { \"upiId\": \"name@bank\" }\n}" }, "url": "{{baseUrl}}/api/redemptions" } },
+    { "name": "My history", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }], "url": "{{baseUrl}}/api/redemptions/my-history" } },
+    { "name": "Admin dashboard", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }], "url": "{{baseUrl}}/api/admin/dashboard" } },
+    { "name": "Admin request list", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }], "url": "{{baseUrl}}/api/admin/redemptions?status=PENDING&page=1&limit=20" } },
+    { "name": "Admin reject request", "request": { "method": "PATCH", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"status\": \"REJECTED\",\n  \"reason\": \"Demo review rejection\"\n}" }, "url": "{{baseUrl}}/api/admin/redemptions/{{redemptionId}}/status" } },
+    { "name": "Admin options", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }], "url": "{{baseUrl}}/api/admin/reward-options" } },
+    { "name": "Admin audit logs", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }], "url": "{{baseUrl}}/api/admin/audit-logs" } },
+    { "name": "Unauthorized admin check", "request": { "method": "GET", "url": "{{baseUrl}}/api/admin/dashboard" } },
+    { "name": "Admin request search and date filters", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }], "url": "{{baseUrl}}/api/admin/redemptions?search={{userId}}&dateFrom=2026-01-01&dateTo=2026-12-31&sort=newest&page=1&limit=20" } },
+    { "name": "Admin user detail and ledger", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }], "url": "{{baseUrl}}/api/admin/users/{{userId}}" } },
+    { "name": "Admin suspend payout access", "request": { "method": "PATCH", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"active\": false,\n  \"reason\": \"Development security test\"\n}" }, "url": "{{baseUrl}}/api/admin/users/{{userId}}/access" } },
+    { "name": "Invalid UPI details (requires active option)", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Idempotency-Key", "value": "invalid-upi-test-001" }], "body": { "mode": "raw", "raw": "{\n  \"method\": \"upi\",\n  \"rewardOptionId\": \"{{rewardOptionId}}\",\n  \"destination\": { \"upiId\": \"not-a-valid-id\" }\n}" }, "url": "{{baseUrl}}/api/redemptions" } },
+    { "name": "Invalid Amazon delivery email (requires active option)", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Idempotency-Key", "value": "invalid-amazon-test-01" }], "body": { "mode": "raw", "raw": "{\n  \"method\": \"amazon\",\n  \"rewardOptionId\": \"{{amazonRewardOptionId}}\",\n  \"destination\": { \"email\": \"not-an-email\" }\n}" }, "url": "{{baseUrl}}/api/redemptions" } },
+    { "name": "Invalid Google Play delivery email (requires active option)", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Idempotency-Key", "value": "invalid-gplay-test-01" }], "body": { "mode": "raw", "raw": "{\n  \"method\": \"googlePlay\",\n  \"rewardOptionId\": \"{{googlePlayRewardOptionId}}\",\n  \"destination\": { \"email\": \"not-an-email\" }\n}" }, "url": "{{baseUrl}}/api/redemptions" } },
+    { "name": "Duplicate UPI submission (reuse previous Idempotency-Key)", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Idempotency-Key", "value": "demo-key-12345678" }], "body": { "mode": "raw", "raw": "{\n  \"method\": \"upi\",\n  \"rewardOptionId\": \"{{rewardOptionId}}\",\n  \"destination\": { \"upiId\": \"name@bank\" }\n}" }, "url": "{{baseUrl}}/api/redemptions" } },
+    { "name": "Create redemption (Amazon, active option required)", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Idempotency-Key", "value": "amazon-test-key-0001" }], "body": { "mode": "raw", "raw": "{\n  \"method\": \"amazon\",\n  \"rewardOptionId\": \"{{amazonRewardOptionId}}\",\n  \"destination\": { \"email\": \"user@example.test\" }\n}" }, "url": "{{baseUrl}}/api/redemptions" } },
+    { "name": "Create redemption (Google Play, active option required)", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Idempotency-Key", "value": "gplay-test-key-0001" }], "body": { "mode": "raw", "raw": "{\n  \"method\": \"googlePlay\",\n  \"rewardOptionId\": \"{{googlePlayRewardOptionId}}\",\n  \"destination\": { \"email\": \"user@example.test\" }\n}" }, "url": "{{baseUrl}}/api/redemptions" } },
+    { "name": "Insufficient balance (requires underfunded test wallet)", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }, { "key": "Content-Type", "value": "application/json" }, { "key": "Idempotency-Key", "value": "insufficient-test-0001" }], "body": { "mode": "raw", "raw": "{\n  \"method\": \"upi\",\n  \"rewardOptionId\": \"{{rewardOptionId}}\",\n  \"destination\": { \"upiId\": \"name@bank\" }\n}" }, "url": "{{baseUrl}}/api/redemptions" } },
+    { "name": "Admin request details", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }], "url": "{{baseUrl}}/api/admin/redemptions/{{redemptionId}}" } },
+    { "name": "Admin reward option modification (verified values required)", "request": { "method": "PATCH", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"method\": \"upi\",\n  \"displayName\": \"{{approvedRewardName}}\",\n  \"denomination\": {{approvedDenomination}},\n  \"currency\": \"INR\",\n  \"requiredVEs\": {{approvedRequiredVEs}},\n  \"description\": \"Verified configuration\",\n  \"active\": false,\n  \"sortOrder\": 0\n}" }, "url": "{{baseUrl}}/api/admin/reward-options/{{rewardOptionId}}" } }
+  ]
+}

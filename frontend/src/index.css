@@ -1,0 +1,42 @@
+:root {
+  font-family: 'DM Sans', sans-serif;
+  color: #f3f3f8;
+  background: #161827;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-optical-sizing: auto;
+  font-weight: 400;
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  min-width: 320px;
+  min-height: 100%;
+  background: #161827;
+}
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #161827;
+}
+#root {
+  min-height: 100vh;
+  color: #f3f3f8;
+  background: #161827;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+::selection {
+  background: #7455f5;
+  color: white;
+}

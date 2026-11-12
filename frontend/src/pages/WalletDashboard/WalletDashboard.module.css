@@ -1,0 +1,530 @@
+.dashboard {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 42px 34px 30px;
+  color: #f3f3f8;
+}
+
+.welcome,
+.sectionHeading,
+.methodCard,
+.transaction,
+.information article {
+  display: flex;
+  align-items: center;
+}
+
+.welcome,
+.sectionHeading {
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.kicker,
+.statLabel {
+  color: #a99ae9;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.17em;
+}
+
+.welcome h1 {
+  margin: 11px 0 5px;
+  font:
+    800 clamp(27px, 4vw, 40px) Manrope,
+    sans-serif;
+  letter-spacing: -0.045em;
+}
+
+.welcome p,
+.sectionHeading p {
+  margin: 0;
+  color: #9292a9;
+  font-size: 13px;
+}
+
+.refreshButton,
+.useButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #3b3c50;
+  border-radius: 10px;
+  background: #202132;
+  color: #eeedf6;
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.refreshButton:disabled,
+.useButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 28px 0 22px;
+}
+
+.stats article {
+  min-height: 160px;
+  padding: 18px;
+  border: 1px solid #303145;
+  border-radius: 15px;
+  background: linear-gradient(145deg, rgba(38, 39, 58, 0.97), rgba(27, 28, 43, 0.97));
+  box-shadow: 0 12px 28px #10111d2e;
+}
+
+.statIcon,
+.methodIcon,
+.transactionIcon,
+.information article > span {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid #5d4d9b;
+  border-radius: 11px;
+  background: #322a54;
+  color: #b6a6ff;
+}
+
+.stats .statLabel {
+  display: block;
+  margin: 18px 0 7px;
+  color: #9292aa;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+}
+
+.stats strong {
+  display: block;
+  overflow-wrap: anywhere;
+  font:
+    750 clamp(16px, 2vw, 22px) Manrope,
+    sans-serif;
+}
+
+.stats small {
+  display: block;
+  margin-top: 6px;
+  color: #88899f;
+  font-size: 10px;
+}
+
+.panel {
+  overflow: hidden;
+  border: 1px solid #303145;
+  border-radius: 16px;
+  background: #1d1e2e;
+  box-shadow: 0 16px 40px #10111d30;
+}
+
+.tabs {
+  display: flex;
+  gap: 7px;
+  padding: 10px 18px 0;
+  border-bottom: 1px solid #303145;
+}
+
+.tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 12px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: #9292a9;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tabs button.activeTab {
+  border-bottom-color: #8b67ff;
+  color: #c3b5ff;
+}
+
+.tabContent {
+  padding: 22px 20px 24px;
+}
+
+.sectionHeading {
+  margin-bottom: 15px;
+}
+
+.sectionHeading h2 {
+  margin: 0 0 4px;
+  font:
+    750 18px Manrope,
+    sans-serif;
+}
+
+.sectionHeading p {
+  font-size: 11px;
+}
+
+.count {
+  flex: none;
+  border: 1px solid #3a3b51;
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: #b5b4c5;
+  font-size: 10px;
+}
+
+.methodList,
+.transactionList {
+  display: grid;
+  gap: 9px;
+}
+
+.methodCard {
+  gap: 13px;
+  padding: 13px;
+  border: 1px solid #343549;
+  border-radius: 12px;
+  background: #222335;
+}
+
+.methodIcon {
+  flex: none;
+  width: 42px;
+  height: 42px;
+}
+
+.methodIcon.green {
+  color: #76d6aa;
+  background: #243b39;
+  border-color: #365751;
+}
+.methodIcon.amber {
+  color: #f2ae58;
+  background: #403324;
+  border-color: #675033;
+}
+.methodIcon.cyan {
+  color: #55cae8;
+  background: #203a47;
+  border-color: #305669;
+}
+
+.methodCopy {
+  min-width: 0;
+  flex: 1;
+}
+
+.methodCopy h3 {
+  margin: 0 0 4px;
+  font-size: 13px;
+}
+
+.methodCopy p,
+.methodCopy small {
+  display: block;
+  margin: 0;
+  color: #9595aa;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.methodCopy small {
+  color: #77788e;
+}
+
+.availability {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  font-size: 10px;
+}
+
+.availability i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.available {
+  color: #6ed2a4;
+}
+.unavailable {
+  color: #e4a26e;
+}
+
+.useButton {
+  flex: none;
+  min-width: 94px;
+  border-color: #624bd1;
+  background: #6f52e9;
+  padding: 9px 11px;
+  font-size: 10px;
+}
+
+.emptyState {
+  display: flex;
+  min-height: 125px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px dashed #3b3c51;
+  border-radius: 12px;
+  color: #9292a9;
+  font-size: 12px;
+}
+.statSkeleton {
+  display: block;
+  width: min(180px, 90%);
+  height: 24px;
+  margin-top: 2px;
+  border-radius: 7px;
+  background: linear-gradient(90deg, #303145 20%, #414258 45%, #303145 70%);
+  background-size: 220% 100%;
+  animation: walletShimmer 1.5s ease-in-out infinite;
+}
+@keyframes walletShimmer {
+  to { background-position: -220% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .statSkeleton { animation: none; }
+}
+
+.transaction {
+  gap: 12px;
+  min-height: 66px;
+  padding: 10px 12px;
+  border: 1px solid #343549;
+  border-radius: 11px;
+  background: #222335;
+}
+
+.transactionIcon {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  background: #30294e;
+}
+
+.transactionInfo {
+  flex: 1;
+  min-width: 0;
+}
+.transactionInfo strong,
+.transactionInfo small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.transactionInfo strong {
+  font-size: 11px;
+}
+.transactionInfo small {
+  margin-top: 4px;
+  color: #86869d;
+  font-size: 9px;
+}
+.transactionValue {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 5px;
+}
+.transactionValue > strong {
+  font-size: 11px;
+}
+
+.status {
+  border-radius: 999px;
+  padding: 3px 7px;
+  background: #343344;
+  color: #c4bddf;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.statusCOMPLETED,
+.statusAPPROVED {
+  color: #75d5a8;
+  background: #233b37;
+}
+.statusREJECTED,
+.statusFAILED,
+.statusCANCELLED {
+  color: #ee9a9a;
+  background: #482f38;
+}
+
+.information {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.information article {
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #303145;
+  border-radius: 13px;
+  background: #1d1e2e;
+}
+
+.information article > span {
+  flex: none;
+  width: 34px;
+  height: 34px;
+}
+.information h3 {
+  margin: 1px 0 5px;
+  font-size: 11px;
+}
+.information p {
+  margin: 0;
+  color: #9292a9;
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+.loader,
+.spinning {
+  animation: spin 1s linear infinite;
+}
+.loader {
+  width: 15px;
+  height: 15px;
+  border: 2px solid #55536d;
+  border-top-color: #a48aff;
+  border-radius: 50%;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 900px) {
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .dashboard {
+    padding: 25px 16px;
+  }
+  .welcome {
+    align-items: flex-start;
+  }
+  .welcome p {
+    max-width: 310px;
+    line-height: 1.5;
+  }
+  .refreshButton {
+    width: 39px;
+    height: 39px;
+    padding: 0;
+    overflow: hidden;
+    font-size: 0;
+  }
+  .refreshButton svg {
+    flex: none;
+  }
+  .stats {
+    gap: 8px;
+    margin: 19px 0 14px;
+  }
+  .stats article {
+    min-height: 142px;
+    padding: 12px;
+  }
+  .stats .statLabel {
+    margin-top: 13px;
+    font-size: 8px;
+  }
+  .stats strong {
+    font-size: 15px;
+  }
+  .stats small {
+    font-size: 9px;
+    line-height: 1.4;
+  }
+  .tabs {
+    gap: 0;
+    padding: 8px 9px 0;
+  }
+  .tabs button {
+    flex: 1;
+    justify-content: center;
+    gap: 5px;
+    padding: 12px 5px;
+    font-size: 10px;
+  }
+  .tabs button svg {
+    width: 14px;
+  }
+  .tabContent {
+    padding: 17px 12px;
+  }
+  .sectionHeading h2 {
+    font-size: 15px;
+  }
+  .sectionHeading p {
+    max-width: 235px;
+    font-size: 9px;
+    line-height: 1.45;
+  }
+  .count {
+    padding: 5px 7px;
+    font-size: 8px;
+  }
+  .methodCard {
+    gap: 9px;
+    flex-wrap: wrap;
+    padding: 11px;
+  }
+  .methodIcon {
+    width: 36px;
+    height: 36px;
+  }
+  .methodCopy {
+    width: calc(100% - 48px);
+    flex: 1 1 calc(100% - 48px);
+  }
+  .availability {
+    margin-left: 45px;
+  }
+  .useButton {
+    margin-left: auto;
+    min-width: 88px;
+  }
+  .information {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .transaction {
+    gap: 8px;
+    padding: 9px;
+  }
+  .transactionInfo small {
+    font-size: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader,
+  .spinning {
+    animation: none;
+  }
+}
