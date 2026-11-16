@@ -1,8 +1,11 @@
+
 import "dotenv/config";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
 import { app } from "./app.js";
 import { connectDatabase, mongoose } from "./config/database.js";
+
 import {
   User,
   Admin,
@@ -35,11 +38,53 @@ if (
   process.argv[1] &&
   path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)
 ) {
-  const required = ["MONGO_URI", "JWT_SECRET", "CLIENT_ORIGIN"];
-  for (const key of required)
-    if (!process.env[key])
-      console.warn("Missing required environment variable: " + key);
-  await connectDatabase();
+  const required = ["JWT_SECRET", "CLIENT_ORIGIN"];
+
+  const missing = required.filter(
+    (key) => !process.env[key]
+  );
+
+  if (missing.length > 0) {
+    console.error(
+      `Missing required environment variables: ${missing.join(", ")}`
+    );
+    process.exit(1);
+  }
+
   const port = Number(process.env.PORT) || 4000;
-  app.listen(port, () => console.log("Payout API listening on port " + port));
+
+  // Start API server first
+  const server = app.listen(port, () => {
+    console.log(`Payout API listening on port ${port}`);
+
+    // Connect to MongoDB after starting the server
+    const mongoUri =
+      process.env.MONGODB_URI || process.env.MONGO_URI;
+
+    if (!mongoUri) {
+      console.error(
+        "MongoDB URI is missing. Database features are unavailable."
+      );
+      return;
+    }
+
+    connectDatabase()
+      .then(() => {
+        console.log("Database connection established.");
+      })
+      .catch((error) => {
+        console.error(
+          "MongoDB connection failed:",
+          error.message
+        );
+        console.error(
+          "API is running, but database features are unavailable."
+        );
+      });
+  });
+
+  server.on("error", (error) => {
+    console.error("Server startup error:", error.message);
+    process.exit(1);
+  });
 }
