@@ -19,6 +19,7 @@ import {
   PasswordReset,
 } from "./models/index.js";
 
+// Export app, database and models
 export {
   app,
   mongoose,
@@ -34,10 +35,12 @@ export {
   PasswordReset,
 };
 
+// Start server only when this file is executed directly
 if (
   process.argv[1] &&
   path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)
 ) {
+  // Validate required environment variables
   const required = ["JWT_SECRET", "CLIENT_ORIGIN"];
 
   const missing = required.filter(
@@ -51,40 +54,63 @@ if (
     process.exit(1);
   }
 
-  const port = Number(process.env.PORT) || 4000;
+  const PORT = Number(process.env.PORT) || 4000;
 
-  // Start API server first
-  const server = app.listen(port, () => {
-    console.log(`Payout API listening on port ${port}`);
+  console.log("Starting VELOOP Payout API...");
 
-    // Connect to MongoDB after starting the server
+  // Start Express server
+  const server = app.listen(PORT, "0.0.0.0", () => {
+    console.log(`VELOOP API listening on port ${PORT}`);
+
+    // Get MongoDB connection URI
     const mongoUri =
       process.env.MONGODB_URI || process.env.MONGO_URI;
 
     if (!mongoUri) {
-      console.error(
-        "MongoDB URI is missing. Database features are unavailable."
-      );
+      console.error("MongoDB URI is missing.");
       return;
     }
 
+    // Connect to MongoDB
     connectDatabase()
       .then(() => {
-        console.log("Database connection established.");
+        console.log("MongoDB connected successfully.");
       })
       .catch((error) => {
         console.error(
           "MongoDB connection failed:",
-          error.message
+          error.name || "MongoDBError",
+          error.code || ""
         );
+
         console.error(
           "API is running, but database features are unavailable."
         );
       });
   });
 
+  // Handle server errors
   server.on("error", (error) => {
     console.error("Server startup error:", error.message);
     process.exit(1);
   });
+
+  // Handle graceful shutdown
+  const shutdown = () => {
+    console.log("Shutting down VELOOP API...");
+
+    server.close(async () => {
+      try {
+        await mongoose.disconnect();
+        console.log("MongoDB disconnected.");
+      } catch (error) {
+        console.error("MongoDB disconnect error:", error.message);
+      }
+
+      process.exit(0);
+    });
+  };
+
+  process.on("SIGTERM", shutdown);
+  process.on("SIGINT", shutdown);
 }
